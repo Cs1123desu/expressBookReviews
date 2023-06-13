@@ -10,7 +10,7 @@ const isValid = (username)=>{ //returns boolean
     let userswithsamename = users.filter((user)=>{
         return user.username === username
     });
-    if (userswithsamename.lenght > 0){
+    if (userswithsamename.length > 0){
         return true;
     } else {
         return false;
@@ -19,10 +19,10 @@ const isValid = (username)=>{ //returns boolean
 
 const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
-    let validusers = users.filter((user) => {
+    let validUser = users.filter((user) => {
         return (user.username === username && user.password === password)
     });
-    if (validusers.length > 0){
+    if (validUser.length > 0){
         return true;
     } else {
         return false;
@@ -54,15 +54,13 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-
-  const username = req.session.authoraization.username
   const isbn = req.params.isbn;
   let filtered_book = books[isbn]
   if (filtered_book) {
       let review = req.query.review;
       let reviewer = req.session.authorization['username'];
       if(review) {
-          filtered_books['reviews'][reviewer] = review;
+          filtered_book['reviews'][reviewer] = review;
           books[isbn] = filtered_book;
       }
       res.send(`The review for the book with ISBN  ${isbn} has been added/updated.`);
@@ -71,6 +69,23 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
       res.send("Unable to find this ISBN!");
   }
 });
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    let filtered_book = books[isbn]
+    if (filtered_book) {
+        let review = req.query.review;
+        let reviewer = req.session.authorization['username'];
+        if(review) {
+            delete filtered_book['reviews'][reviewer];
+        }
+        res.send(`The review for the book with ISBN  ${isbn} has been deleted.`);
+    }
+    else{
+        res.send("Unable to find this ISBN!");
+    }
+});
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;

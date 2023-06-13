@@ -11,9 +11,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "auth": "^0.0.9",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "npm-auth": "^1.1.0"
   }
 }
